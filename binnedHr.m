@@ -1,5 +1,22 @@
 function [Hr,sdHru] = binnedHr(sdim,rdim,resp_func,sig_s,sig_n,sig_m,Nstim,edges)
-% Computes binned entropy of responses generated based on resp-func
+% Computes binned entropy of responses generated based on resp_func
+%
+% sdim is the dimension of the input (i.e. number of pixels, number of
+% subunits).
+% rdim is the output response dimension.
+% resp_func is a string indicating which circuit configuration function to
+% use.
+% sig_s is the standard deviation of the gaussian distribution from which
+% the stimulus values are drawn.
+% sig_n is the standard deviation of the gaussian noise that enters the
+% subunits. It is effectively noise that is added to the stim. 
+% sig_m is the standard deviation of the gaussian noise that is added to
+% the output.
+% Nstim is the number of stimulus samples (i.e. trials).
+% edges is a vector of bin partitions for the histogram counts.
+%
+% stimstem is an sdim x Nstim matrix of stimulus values where sdim is the
+% number of subunits (or inputs) and Nstim is the number of samples.
 
 runs = 6;
 
