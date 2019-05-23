@@ -1,4 +1,4 @@
-% binned H metrics for 2Din, 2Dout circuits
+% binned H metrics for convergent, divergent circuit variations
 % For my manuscript, I'll only use the binned H but I'm computing the
 % bin-corrected h out of curiosity.
 
