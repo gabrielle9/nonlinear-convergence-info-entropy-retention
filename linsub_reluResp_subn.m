@@ -1,9 +1,25 @@
 function [resps] = linsub_reluResp_subn(stimstem,sig_n,sig_m,varargin);
 % Generates ON and OFF nonlinear reLu output response from linear subunits
-% assumes rdim = 2
-% makes a portion of the subunit noise correlated and the rest uncorrelated between outputs
-% ro_n is the desired correlation coefficient for the subunit noise between
-% outputs - it is between 0 and 1
+% stimstem is an sdim x Nstim matrix of stimulus values where sdim is the
+% number of subunits (or inputs) and Nstim is the number of samples.
+
+% sig_n is the standard deviation of the gaussian noise that enters the
+% subunits. It is effectively noise that is added to the stim. 
+
+% sig_m is the standard deviation of the gaussian noise that is added to
+% the output.
+
+% varargin allows for an additional variable, ro_n, which is a correlation
+% coefficient for the subunit noise. 0 <= ro_n <= 1 and when ro_n is 1, the
+% subunit noise is entirely correlated between the ON and OFF outputs; when 
+% ro_n = 0, the noise in the subunits is entirely independent between the ON and OFF outputs.
+% If varargin is empty, ro_n = 0.5 by default.
+% The subunit noise is always independent among the subunits in this code.
+
+% This function assumes that the output consists of an ON and an OFF cell
+% that have overlapping receptive fields and therefore receive the same
+% stimulus.
+
 minArgs = 3;
 maxArgs = 4;
 narginchk(minArgs,maxArgs)
