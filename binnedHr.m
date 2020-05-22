@@ -1,70 +1,181 @@
-function [Hr,sdHru] = binnedHr(sdim,rdim,resp_func,sig_s,sig_n,sig_m,Nstim,edges)
-% Computes binned entropy of responses generated based on resp_func
-%
-% sdim is the dimension of the input (i.e. number of pixels, number of
-% subunits).
-% rdim is the output response dimension.
-% resp_func is a string indicating which circuit configuration function to
-% use.
-% sig_s is the standard deviation of the gaussian distribution from which
-% the stimulus values are drawn.
-% sig_n is the standard deviation of the gaussian noise that enters the
-% subunits. It is effectively noise that is added to the stim. 
-% sig_m is the standard deviation of the gaussian noise that is added to
-% the output.
-% Nstim is the number of stimulus samples (i.e. trials).
-% edges is a vector of bin partitions for the histogram counts.
-%
-% stimstem is an sdim x Nstim matrix of stimulus values where sdim is the
-% number of subunits (or inputs) and Nstim is the number of samples.
+function [Hr,sdHru] = binnedHr(sdim,rdim,resp_func,sig_s,sig_n,sig_m,Nstim,edges,runs,varargin)
 
-runs = 6;
+minArgs = 9;
+maxArgs = 10;
+narginchk(minArgs,maxArgs)
+
+if nargin == 10
+    Wsub = varargin{1};
+end
+
+% runs = 6;
+Hru = zeros(1,runs);
 
 tic
 switch resp_func
     case 'linear'
-        Hru = zeros(1,runs);
         parfor rur = 1:runs
-        stimstem = sig_s.*randn(sdim,Nstim);
-        [resps] = linsubResp_subn(stimstem,sig_n,sig_m);
-        if rdim == 1
-            resps = resps(:,1);
-            [counts_resp,~] = histcounts(resps,edges);
-        else
-            [counts_resp,~,~] = histcounts2(resps(:,1),resps(:,2),edges,edges);
-        end
-        Pcounts = counts_resp(:)./sum(counts_resp(:));
-        Hru(rur) = -nansum(Pcounts.*log2(Pcounts));
+            stimstem = sig_s.*randn(sdim,Nstim);
+            [resps] = linsubResp_subn(stimstem,sig_n,sig_m);
+            if rdim == 1
+                resps = resps(:,1);
+                [counts_resp,~] = histcounts(resps,edges);
+            else
+                [counts_resp,~,~] = histcounts2(resps(:,1),resps(:,2),edges,edges);
+            end
+            Pcounts = counts_resp(:)./sum(counts_resp(:));
+            Pcounts = Pcounts(Pcounts>0);
+            Hru(rur) = -nansum(Pcounts(Pcounts>0).*log2(Pcounts(Pcounts>0)));
         end
         
     case 'relu'
-        Hru = zeros(1,runs);
         parfor rur = 1:runs
-        stimstem = sig_s.*randn(sdim,Nstim);
-        [resps] = nlsubsResp_reLu_subn(stimstem,sig_n,sig_m);
-        if rdim == 1
-            resps = resps(:,1);
-            [counts_resp,~] = histcounts(resps,edges);
-        else
-            [counts_resp,~,~] = histcounts2(resps(:,1),resps(:,2),edges,edges);
-        end
-        Pcounts = counts_resp(:)./sum(counts_resp(:));
-        Hru(rur) = -nansum(Pcounts.*log2(Pcounts));
+            stimstem = sig_s.*randn(sdim,Nstim);
+            [resps] = nlsubsResp_reLu_subn(stimstem,sig_n,sig_m);
+            if rdim == 1
+                resps = resps(:,1);
+                [counts_resp,~] = histcounts(resps,edges);
+            else
+                [counts_resp,~,~] = histcounts2(resps(:,1),resps(:,2),edges,edges);
+            end
+            Pcounts = counts_resp(:)./sum(counts_resp(:));
+            Pcounts = Pcounts(Pcounts>0);
+            Hru(rur) = -nansum(Pcounts(Pcounts>0).*log2(Pcounts(Pcounts>0)));
         end
         
     case 'relu_out'
-        Hru = zeros(1,runs);
         parfor rur = 1:runs
-        stimstem = sig_s.*randn(sdim,Nstim);
-        [resps] = linsub_reluResp_subn(stimstem,sig_n,sig_m);
-        if rdim == 1
-            resps = resps(:,1);
-            [counts_resp,~] = histcounts(resps,edges);
-        else
-            [counts_resp,~,~] = histcounts2(resps(:,1),resps(:,2),edges,edges);
+            stimstem = sig_s.*randn(sdim,Nstim);
+            [resps] = linsub_reluResp_subn(stimstem,sig_n,sig_m);
+            if rdim == 1
+                resps = resps(:,1);
+                [counts_resp,~] = histcounts(resps,edges);
+            else
+                [counts_resp,~,~] = histcounts2(resps(:,1),resps(:,2),edges,edges);
+            end
+            Pcounts = counts_resp(:)./sum(counts_resp(:));
+            Pcounts = Pcounts(Pcounts>0);
+            Hru(rur) = -nansum(Pcounts(Pcounts>0).*log2(Pcounts(Pcounts>0)));
         end
-        Pcounts = counts_resp(:)./sum(counts_resp(:));
-        Hru(rur) = -nansum(Pcounts.*log2(Pcounts));
+        
+    case 'linear36'
+        parfor rur = 1:runs
+            stimstem = sig_s.*randn(sdim,Nstim);
+            [resps] = linsubResp_sub36(stimstem,sig_n,sig_m,Wsub);
+            if rdim == 1
+                resps = resps(:,1);
+                [counts_resp,~] = histcounts(resps,edges);
+            else
+                [counts_resp,~,~] = histcounts2(resps(:,1),resps(:,2),edges,edges);
+            end
+            Pcounts = counts_resp(:)./sum(counts_resp(:));
+            Pcounts = Pcounts(Pcounts>0);
+            Hru(rur) = -nansum(Pcounts.*log2(Pcounts));
+        end
+        
+    case 'relu36'
+        parfor rur = 1:runs
+            stimstem = sig_s.*randn(sdim,Nstim);
+            [resps] = nlsubsResp_reLu_sub36(stimstem,sig_n,sig_m,Wsub);
+            if rdim == 1
+                resps = resps(:,1);
+                [counts_resp,~] = histcounts(resps,edges);
+            else
+                [counts_resp,~,~] = histcounts2(resps(:,1),resps(:,2),edges,edges);
+            end
+            Pcounts = counts_resp(:)./sum(counts_resp(:));
+            Pcounts = Pcounts(Pcounts>0);
+            Hru(rur) = -nansum(Pcounts.*log2(Pcounts));
+        end
+        
+    case 'relu_out36'
+        parfor rur = 1:runs
+            stimstem = sig_s.*randn(sdim,Nstim);
+            [resps] = linsub_reluResp_sub36(stimstem,sig_n,sig_m,Wsub);
+            if rdim == 1
+                resps = resps(:,1);
+                [counts_resp,~] = histcounts(resps,edges);
+            else
+                [counts_resp,~,~] = histcounts2(resps(:,1),resps(:,2),edges,edges);
+            end
+            Pcounts = counts_resp(:)./sum(counts_resp(:));
+            Pcounts = Pcounts(Pcounts>0);
+            Hru(rur) = -nansum(Pcounts.*log2(Pcounts));
+        end
+        
+    case 'linear_sqsc'
+        parfor rur = 1:runs
+            stimstem = sig_s.*randn(sdim,Nstim);
+            [resps] = linsubResp_subn_sqsc(stimstem,sig_n,sig_m);
+            if rdim == 1
+                resps = resps(:,1);
+                [counts_resp,~] = histcounts(resps,edges);
+            else
+                [counts_resp,~,~] = histcounts2(resps(:,1),resps(:,2),edges,edges);
+            end
+            Pcounts = counts_resp(:)./sum(counts_resp(:));
+            Pcounts = Pcounts(Pcounts>0);
+            Hru(rur) = -nansum(Pcounts.*log2(Pcounts));
+        end
+        
+    case 'relu_sqsc'
+        parfor rur = 1:runs
+            stimstem = sig_s.*randn(sdim,Nstim);
+            [resps] = nlsubsResp_reLu_subn_sqsc(stimstem,sig_n,sig_m);
+            if rdim == 1
+                resps = resps(:,1);
+                [counts_resp,~] = histcounts(resps,edges);
+            else
+                [counts_resp,~,~] = histcounts2(resps(:,1),resps(:,2),edges,edges);
+            end
+            Pcounts = counts_resp(:)./sum(counts_resp(:));
+            Pcounts = Pcounts(Pcounts>0);
+            Hru(rur) = -nansum(Pcounts.*log2(Pcounts));
+        end
+        
+    case 'relu_out_sqsc'
+        parfor rur = 1:runs
+            stimstem = sig_s.*randn(sdim,Nstim);
+            [resps] = linsub_reluResp_subn_sqsc(stimstem,sig_n,sig_m);
+            if rdim == 1
+                resps = resps(:,1);
+                [counts_resp,~] = histcounts(resps,edges);
+            else
+                [counts_resp,~,~] = histcounts2(resps(:,1),resps(:,2),edges,edges);
+            end
+            Pcounts = counts_resp(:)./sum(counts_resp(:));
+            Pcounts = Pcounts(Pcounts>0);
+            Hru(rur) = -nansum(Pcounts.*log2(Pcounts));
+        end
+        
+            case 'linsubs_sqsc_cgout'
+        parfor rur = 1:runs
+            stimstem = sig_s.*randn(sdim,Nstim);
+            [resps] = linsub_cgResp_subn_sqsc(stimstem,sig_n,sig_m);
+            if rdim == 1
+                resps = resps(:,1);
+                [counts_resp,~] = histcounts(resps,edges);
+            else
+                [counts_resp,~,~] = histcounts2(resps(:,1),resps(:,2),edges,edges);
+            end
+            Pcounts = counts_resp(:)./sum(counts_resp(:));
+            Pcounts = Pcounts(Pcounts>0);
+            Hru(rur) = -nansum(Pcounts.*log2(Pcounts));
+        end
+        
+    case 'nlsubs_sqsc_cgout'
+        parfor rur = 1:runs
+            stimstem = sig_s.*randn(sdim,Nstim);
+            [resps] = nlsub_cgResp_subn_sqsc(stimstem,sig_n,sig_m);
+            if rdim == 1
+                resps = resps(:,1);
+                [counts_resp,~] = histcounts(resps,edges);
+            else
+                [counts_resp,~,~] = histcounts2(resps(:,1),resps(:,2),edges,edges);
+            end
+            Pcounts = counts_resp(:)./sum(counts_resp(:));
+            Pcounts = Pcounts(Pcounts>0);
+            Hru(rur) = -nansum(Pcounts.*log2(Pcounts));
         end
 end
 toc
