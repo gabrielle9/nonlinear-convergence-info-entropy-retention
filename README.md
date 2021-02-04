@@ -8,6 +8,9 @@ binnedH*.m files are functions that compute and return binned entropy. See comme
 H_binned_nDin_circuits.m computes the binned entropies of the output responses from the circuit configurations studied in our paper: "Nonlinear convergence boosts information coding in circuits with parallel outputs".
 
 In the Visualizations-and-Figures folder, the scripts produce the figures in our paper.
+
 Fig. 2: nDin_plots_hist_binH_normed.m
+
 Fig. 3: stim_sub_resp_space_quads_2Din_2Dout.m
+
 Fig. 4: Mean_contrast_visualization.m
