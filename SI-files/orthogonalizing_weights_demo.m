@@ -1,3 +1,5 @@
+% generate Fig. S6
+
 clearvars
 
 Nstim = 1e4;
@@ -9,9 +11,9 @@ sig_m = 0;
 
 sws4 = 4; %7; %number of angles
 
-bw = sig_s*(1e-3); %sig_s*(1e-2); %*sqrt(sdim);
-edgebound = ceil(5.5*sig_s*sqrt(sdim));
-edges = -edgebound:bw:edgebound;
+% bw = sig_s*(1e-3); %sig_s*(1e-2); %*sqrt(sdim);
+% edgebound = ceil(5.5*sig_s*sqrt(sdim));
+% edges = -edgebound:bw:edgebound;
 
 %%
 stimstem = sig_s.*randn(sdim,Nstim);
@@ -84,9 +86,10 @@ for j = 1:sws4
 end
 
 %%
-cd('/Users/gabriellegutierrez/Documents/MATLAB/Retina/2020/May/8')
-load('H_binned_subweights_8May20.mat')
-cd('/Users/gabriellegutierrez/Documents/MATLAB/Retina/2020/May/9')
+% load results saved from H_orthogonalizing_weights.m
+cd('/Users/gabriellegutierrez/Documents/MATLAB/Retina/2020/September/4')
+load('H_binned_subweights_4Sep20.mat')
+% cd('/Users/gabriellegutierrez/Documents/MATLAB/Retina/2020/May/9')
 
 subplot(frows,fcols,3)
 text(20,30,{['H = ' num2str(H_nl_nlout(1))]},'FontSize',fon)

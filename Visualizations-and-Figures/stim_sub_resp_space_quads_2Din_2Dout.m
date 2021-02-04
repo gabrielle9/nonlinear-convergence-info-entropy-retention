@@ -1,8 +1,8 @@
 clearvars
 
-sig_s = 10;
-sig_n = 0;
-sig_m = 0;
+sig_s = 10; %std of stim
+sig_n = 0; %std of input noise
+sig_m = 0; %std of output noise
 
 %% Stim set up
 Nstim = 1e4;
@@ -15,15 +15,14 @@ quad3 = ((stimstem(1,:)<=0)&(stimstem(2,:)<=0));
 quad4 = ((stimstem(1,:)>0)&(stimstem(2,:)<=0));
 
 %% Subunits explanation: 2D input, 2D output
-rdim = 2;
+rdim = 2; %output dimension
 
-[nl_resps] = nlsubsResp_reLu_subn(stimstem,sig_n,sig_m);
+% generate responses
+[nl_resps] = subunit_circuit_outnoise_pre_nl_cg_fix(stimstem,sig_n,sig_m,[0,0],'relu',[0,0],0);
+[lin_resps] = subunit_circuit_outnoise_pre_nl_cg_fix(stimstem,sig_n,sig_m,[-inf,-inf],'linear',[-inf,-inf],0);
+[nl_resps0] = subunit_circuit_outnoise_pre_nl_cg_fix(stimstem,sig_n,sig_m,[-inf,-inf],'relu',[0,0],0);
 
-[lin_resps] = linsubResp_subn(stimstem,sig_n,sig_m);
-
-nl_resps0 = lin_resps;
-nl_resps0(lin_resps<0) = 0;
-
+%generate subunit responses
 nl_subs_on = stimstem;
 nl_subs_on(nl_subs_on<0) = 0;
 

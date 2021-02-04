@@ -1,4 +1,4 @@
-function [Hr,sdHru,mResps] = binnedHr_threshs_stimcorr(sdim,rdim,threshs,sig_s,sig_n,sig_m,Nstim,edges,varargin)
+function [Hr,sdHru,mResps] = binnedHr_threshs_stimcorr(sdim,rdim,threshs,sig_s,sig_n,sig_m,Nstim,bw,varargin)
 
 % works for any size sdim
 
@@ -24,6 +24,9 @@ tic
             stimstem(2:end,:) = repmat(stimstem(1,:),sdim-1,1) + sig_c.*randn(sdim-1,Nstim);
             
             [resps] = nlsubsResp_thresh_reLu_subn_sqsc_nlout(stimstem,sig_n,sig_m,threshs,nlout);
+            eboundmin = floor(min(signal) - 2*bw);
+        eboundmax = ceil(max(signal) + 2*bw);
+        edges = eboundmin:bw:eboundmax;
             if rdim == 1
                 resps = resps(:,1);
                 [counts_resp,~] = histcounts(resps,edges);

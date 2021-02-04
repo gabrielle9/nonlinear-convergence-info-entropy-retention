@@ -4,11 +4,9 @@
 
 clearvars
 
-% cd('/Users/gabriellegutierrez/Documents/MATLAB/Retina/2019/June/5')
-% load('H_binned_nDin_sigs10_no_noise_5June19.mat')
-
-cd('/Users/gabriellegutierrez/Documents/MATLAB/Retina/2020/March/29')
-load('H_binned_nDin_sigs10_sqsc_cg_relu_out_29Mar20.mat')
+% load results saved from H_binned_nDin_circuits.m
+cd('/Users/gabriellegutierrez/Documents/MATLAB/Retina/2020/September/4')
+load('H_binned_nDin_sigs10_sqsc_cg_relu_out_4Sep20.mat')
 
 %% figure set up
 fon = 16;
@@ -23,12 +21,13 @@ fig1 = figure;
 axesH = axes;
 fon = 24;
 
-Hr_nlout_nDin_1Dout_sqsc_norm = Hr_nlout_nDin_1Dout_sqsc./Hr_lin_nDin_1Dout_sqsc;
-Hr_nl_nDin_1Dout_sqsc_norm = Hr_nl_nDin_1Dout_sqsc./Hr_lin_nDin_1Dout_sqsc;
+% normalize entropy
+Hr_linsubs_nlout_nDin_1Dout_sqsc_norm = Hr_linsubs_nlout_nDin_1Dout_sqsc./Hr_linsubs_linout_nDin_1Dout_sqsc;
+Hr_nlsubs_nlout_nDin_1Dout_sqsc_norm = Hr_nlsubs_nlout_nDin_1Dout_sqsc./Hr_linsubs_linout_nDin_1Dout_sqsc;
 
 hold on
-plot(sdims,Hr_nl_nDin_1Dout_sqsc_norm,'k','LineWidth',lw)
-plot(sdims,Hr_nlout_nDin_1Dout_sqsc_norm,'Color',[0.5,0.5,0.5],'LineWidth',lw)
+plot(sdims,Hr_nlsubs_nlout_nDin_1Dout_sqsc_norm,'k','LineWidth',lw)
+plot(sdims,Hr_linsubs_nlout_nDin_1Dout_sqsc_norm,'Color',[0.5,0.5,0.5],'LineWidth',lw)
 
 % plot(sdimsh(1), Hr_nl_nDin_1Dout_sqsc(sdimsh(1)),'p','Color',cmap(1,:),'MarkerSize',ms)
 % plot(sdimsh(2), Hr_nl_nDin_1Dout_sqsc(sdimsh(2)),'p','Color',cmap(2,:),'MarkerSize',ms)
@@ -53,12 +52,12 @@ fig2 = figure;
 axesH = axes;
 fon = 24;
 
-Hr_nlout_nDin_2Dout_sqsc_norm = Hr_nlout_nDin_2Dout_sqsc./Hr_lin_nDin_2Dout_sqsc;
-Hr_nl_nDin_2Dout_sqsc_norm = Hr_nl_nDin_2Dout_sqsc./Hr_lin_nDin_2Dout_sqsc;
+Hr_linsubs_nlout_nDin_2Dout_sqsc_norm = Hr_linsubs_nlout_nDin_2Dout_sqsc./Hr_linsubs_linout_nDin_2Dout_sqsc;
+Hr_nlsubs_nlout_nDin_2Dout_sqsc_norm = Hr_nlsubs_nlout_nDin_2Dout_sqsc./Hr_linsubs_linout_nDin_2Dout_sqsc;
 
 hold on
-plot(sdims,Hr_nl_nDin_2Dout_sqsc_norm,'k','LineWidth',7)
-plot(sdims,Hr_nlout_nDin_2Dout_sqsc_norm,'Color',[0.5,0.5,0.5],'LineWidth',5)
+plot(sdims,Hr_nlsubs_nlout_nDin_2Dout_sqsc_norm,'k','LineWidth',7)
+plot(sdims,Hr_linsubs_nlout_nDin_2Dout_sqsc_norm,'Color',[0.5,0.5,0.5],'LineWidth',5)
 
 grid on
 set(gca,'FontSize',fon)
@@ -78,12 +77,12 @@ fig3 = figure;
 axesH = axes;
 fon = 24;
 
-Hr_nlout_nDin_1Dout_sqsc_norm = Hr_nlout_nDin_1Dout_sqsc./Hr_lin_nDin_1Dout_sqsc;
-Hr_nl_nDin_1Dout_sqsc_norm = Hr_nl_nDin_1Dout_sqsc./Hr_lin_nDin_1Dout_sqsc;
+Hr_linsubs_nlout_nDin_1Dout_sqsc_norm = Hr_linsubs_nlout_nDin_1Dout_sqsc./Hr_linsubs_linout_nDin_1Dout_sqsc;
+Hr_nlsubs_nlout_nDin_1Dout_sqsc_norm = Hr_nlsubs_nlout_nDin_1Dout_sqsc./Hr_linsubs_linout_nDin_1Dout_sqsc;
 
 hold on
-plot(sdims,Hr_nl_nDin_1Dout_sqsc_norm,'--k','LineWidth',lw)
-plot(sdims,Hr_nlout_nDin_1Dout_sqsc_norm,'--','Color',[0.5,0.5,0.5],'LineWidth',lw)
+plot(sdims,Hr_nlsubs_nlout_nDin_1Dout_sqsc_norm,'--k','LineWidth',lw)
+plot(sdims,Hr_linsubs_nlout_nDin_1Dout_sqsc_norm,'--','Color',[0.5,0.5,0.5],'LineWidth',lw)
 
 grid on
 set(gca,'FontSize',fon)
@@ -104,12 +103,12 @@ fig4 = figure;
 axesH = axes;
 fon = 24;
 
-Hr_nlout_nDin_2Dout_sqsc_norm = Hr_nlout_nDin_2Dout_sqsc./Hr_lin_nDin_2Dout_sqsc;
-Hr_nl_nDin_2Dout_sqsc_norm = Hr_nl_nDin_2Dout_sqsc./Hr_lin_nDin_2Dout_sqsc;
+Hr_linsubs_nlout_nDin_2Dout_sqsc_norm = Hr_linsubs_nlout_nDin_2Dout_sqsc./Hr_linsubs_linout_nDin_2Dout_sqsc;
+Hr_nlsubs_nlout_nDin_2Dout_sqsc_norm = Hr_nlsubs_nlout_nDin_2Dout_sqsc./Hr_linsubs_linout_nDin_2Dout_sqsc;
 
 hold on
-plot(sdims,Hr_nl_nDin_2Dout_sqsc_norm,'--k','LineWidth',7)
-plot(sdims,Hr_nlout_nDin_2Dout_sqsc_norm,'--','Color',[0.5,0.5,0.5],'LineWidth',5)
+plot(sdims,Hr_nlsubs_nlout_nDin_2Dout_sqsc_norm,'--k','LineWidth',7)
+plot(sdims,Hr_linsubs_nlout_nDin_2Dout_sqsc_norm,'--','Color',[0.5,0.5,0.5],'LineWidth',5)
 
 grid on
 set(gca,'FontSize',fon)
@@ -125,15 +124,17 @@ axesH.XAxis.MinorTickValues = 1:1:20;
 axis square
 
 %% nDin, 1Dout scaled subunits, cumulative gaussian output nl
-cd('/Users/gabriellegutierrez/Documents/MATLAB/Retina/2020/March/29')
-load('H_binned_nDin_sigs10_sqsc_cg_relu_out_29Mar20.mat')
+% cd('/Users/gabriellegutierrez/Documents/MATLAB/Retina/2020/March/29')
+% load('H_binned_nDin_sigs10_sqsc_cg_relu_out_29Mar20.mat')
+cd('/Users/gabriellegutierrez/Documents/MATLAB/Retina/2020/September/4')
+load('H_binned_nDin_sigs10_sqsc_cg_relu_out_4Sep20.mat')
 
 fig5 = figure; 
 axesH = axes;
 fon = 24;
 
-Hr_linsubs_cgout_nDin_1Dout_sqsc_norm = Hr_linsubs_cgout_nDin_1Dout_sqsc./Hr_lin_nDin_1Dout_sqsc;
-Hr_nlsubs_cgout_nDin_1Dout_sqsc_norm = Hr_nlsubs_cgout_nDin_1Dout_sqsc./Hr_lin_nDin_1Dout_sqsc;
+Hr_linsubs_cgout_nDin_1Dout_sqsc_norm = Hr_linsubs_cgout_nDin_1Dout_sqsc./Hr_linsubs_linout_nDin_1Dout_sqsc;
+Hr_nlsubs_cgout_nDin_1Dout_sqsc_norm = Hr_nlsubs_cgout_nDin_1Dout_sqsc./Hr_linsubs_linout_nDin_1Dout_sqsc;
 
 hold on
 plot(sdims,Hr_nlsubs_cgout_nDin_1Dout_sqsc_norm,'k','LineWidth',lw)
@@ -162,15 +163,17 @@ plot(sdims,Hr_linsubs_cgout_nDin_1Dout_sqsc_norm,'Color',[0.5,0.5,0.5],'LineWidt
 legend('nonlinear subunits, reLu out','linear subunits, reLu out','nonlinear subunits, cg out','linear subunits, cg out')
 
 %% nDin, 2Dout scaled subunits, cumulative gaussian output nl
-cd('/Users/gabriellegutierrez/Documents/MATLAB/Retina/2020/March/29')
-load('H_binned_nDin_sigs10_sqsc_cg_relu_out_29Mar20.mat')
+% cd('/Users/gabriellegutierrez/Documents/MATLAB/Retina/2020/March/29')
+% load('H_binned_nDin_sigs10_sqsc_cg_relu_out_29Mar20.mat')
+cd('/Users/gabriellegutierrez/Documents/MATLAB/Retina/2020/September/4')
+load('H_binned_nDin_sigs10_sqsc_cg_relu_out_4Sep20.mat')
 
 fig6 = figure; 
 axesH = axes;
 fon = 24;
 
-Hr_linsubs_cgout_nDin_2Dout_sqsc_norm = Hr_linsubs_cgout_nDin_2Dout_sqsc./Hr_lin_nDin_2Dout_sqsc;
-Hr_nlsubs_cgout_nDin_2Dout_sqsc_norm = Hr_nlsubs_cgout_nDin_2Dout_sqsc./Hr_lin_nDin_2Dout_sqsc;
+Hr_linsubs_cgout_nDin_2Dout_sqsc_norm = Hr_linsubs_cgout_nDin_2Dout_sqsc./Hr_linsubs_linout_nDin_2Dout_sqsc;
+Hr_nlsubs_cgout_nDin_2Dout_sqsc_norm = Hr_nlsubs_cgout_nDin_2Dout_sqsc./Hr_linsubs_linout_nDin_2Dout_sqsc;
 
 hold on
 plot(sdims,Hr_nlsubs_cgout_nDin_2Dout_sqsc_norm,'k','LineWidth',lw)
@@ -199,8 +202,10 @@ plot(sdims,Hr_linsubs_cgout_nDin_2Dout_sqsc_norm,'Color',[0.5,0.5,0.5],'LineWidt
 legend('nonlinear subunits, reLu out','linear subunits, reLu out','nonlinear subunits, cg out','linear subunits, cg out')
 
 %% plot new results to check
-cd('/Users/gabriellegutierrez/Documents/MATLAB/Retina/2020/March/29')
-load('H_binned_nDin_sigs10_sqsc_cg_relu_out_29Mar20.mat')
+% cd('/Users/gabriellegutierrez/Documents/MATLAB/Retina/2020/March/29')
+% load('H_binned_nDin_sigs10_sqsc_cg_relu_out_29Mar20.mat')
+cd('/Users/gabriellegutierrez/Documents/MATLAB/Retina/2020/September/4')
+load('H_binned_nDin_sigs10_sqsc_cg_relu_out_4Sep20.mat')
 
 fig7 = figure; 
 % axesH = axes;
