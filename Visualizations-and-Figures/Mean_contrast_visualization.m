@@ -23,17 +23,16 @@ stimstem = [point1,point2,point3,stimstem];
 sumstim = sum(stimstem);
 diffstim = abs(diff(stimstem));
 
-% Wsub = [1,1;1,-1];
-Wsub = [cos(3*pi/12),sin(3*pi/12);cos(9*pi/12),sin(9*pi/12)]; %normed
-% [nl_resps] = nlsubsResp_reLu_subn(stimstem,sig_n,sig_m);
-% [lin_resps] = linsubResp_subn(stimstem,sig_n,sig_m);
-% [nl_resps] = nlsubsResp_reLu_sub36(stimstem,sig_n,sig_m,Wsub);
-% [lin_resps] = linsubResp_sub36(stimstem,sig_n,sig_m,Wsub);
-[nl_resps] = nlsubsResp_reLu_sub36_new(stimstem,sig_n,sig_m,Wsub);
-[lin_resps] = linsubResp_sub36_new(stimstem,sig_n,sig_m,Wsub);
+linthrs = [-inf,-inf];
+reluthrs = [0,0];
 
-nl_resps0 = lin_resps;
-nl_resps0(lin_resps<0) = 0;
+linout = 'linear';
+reluout = 'relu';
+cgout = 'cg';
+
+[nl_resps] = subunit_circuit_outnoise_pre_nl_cg_fix(stimstem,sig_n,sig_m,reluthrs,'relu',reluthrs,0);
+[nl_resps0] = subunit_circuit_outnoise_pre_nl_cg_fix(stimstem,sig_n,sig_m,linthrs,'relu',reluthrs,0);
+[lin_resps] = subunit_circuit_outnoise_pre_nl_cg_fix(stimstem,sig_n,sig_m,linthrs,'linear',linthrs,0);
 
 %% Figure set up
 fig1 = figure;
