@@ -33,7 +33,7 @@ parfor rur = 1:runs
     
     Pcounts = counts_resp(:)./sum(counts_resp(:));
     Pcounts = Pcounts(Pcounts>0);
-    Hru(rur) = -nansum(Pcounts.*log2(Pcounts));
+    Hru(rur) = -Pcounts'*log2(Pcounts);
 end
 
 toc

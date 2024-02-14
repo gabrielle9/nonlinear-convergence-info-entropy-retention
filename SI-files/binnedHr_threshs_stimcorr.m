@@ -19,24 +19,24 @@ mRespsu = zeros(runs,rdim);
 
 tic
 
-        parfor rur = 1:runs
-            stimstem = sig_s.*randn(sdim,Nstim);
-            stimstem(2:end,:) = repmat(stimstem(1,:),sdim-1,1) + sig_c.*randn(sdim-1,Nstim);
-            
-            [resps] = nlsubsResp_thresh_reLu_subn_sqsc_nlout(stimstem,sig_n,sig_m,threshs,nlout);
-            eboundmin = floor(min(signal) - 2*bw);
-        eboundmax = ceil(max(signal) + 2*bw);
-        edges = eboundmin:bw:eboundmax;
-            if rdim == 1
-                resps = resps(:,1);
-                [counts_resp,~] = histcounts(resps,edges);
-            else
-                [counts_resp,~,~] = histcounts2(resps(:,1),resps(:,2),edges,edges);
-            end
-            Pcounts = counts_resp(:)./sum(counts_resp(:));
-            Hru(rur) = -nansum(Pcounts.*log2(Pcounts));
-            mRespsu(rur,:) = mean(resps); % runs x rdim
-        end
+parfor rur = 1:runs
+    stimstem = sig_s.*randn(sdim,Nstim);
+    stimstem(2:end,:) = repmat(stimstem(1,:),sdim-1,1) + sig_c.*randn(sdim-1,Nstim);
+    
+    [resps] = nlsubsResp_thresh_reLu_subn_sqsc_nlout(stimstem,sig_n,sig_m,threshs,nlout);
+    eboundmin = floor(min(resps(:)) - 2*bw);
+    eboundmax = ceil(max(resps(:)) + 2*bw);
+    edges = eboundmin:bw:eboundmax;
+    if rdim == 1
+        resps = resps(:,1);
+        [counts_resp,~] = histcounts(resps,edges);
+    else
+        [counts_resp,~,~] = histcounts2(resps(:,1),resps(:,2),edges,edges);
+    end
+    Pcounts = counts_resp(:)./sum(counts_resp(:));
+    Hru(rur) = -Pcounts'*log2(Pcounts);
+    mRespsu(rur,:) = mean(resps); % runs x rdim
+end
 
 toc
 
